@@ -117,5 +117,31 @@ import userRoutes from "./routes/users.js";
 ```
 Usar el método `app.use`, y especificar la ruta y el controlador del enrutador:
 ```
-app.use("/users", userRoutes)
+app.use("/users", userRoutes);
 ```
+
+## Crear el Endpoint POST /users
+Permite agregar datos utilizando la petición POST. Acepta datos enviados por el cliente y los almacena en la base de datos simulada. Definimos la ruta que acepte la petición POST.
+Previamente, instala el paquete UUID con el comando:
+```
+npm install uuid
+```
+Este paquete genera un ID único para cada usuario que se crea. Esto será útil cuando implementemos las peticiónes GET, DELETE y PATCH de un usuario mediante ID.
+```
+import { v4 as uuidv4 } from "uuid";
+```
+Implementamos el código para las peticiones POST.
+```
+router.post("/", (req, res) => {
+  const user = req.body;
+
+  users.push({ ...user, id: uuidv4() });
+
+  res.send(`${user.first_name} has been added to the Database`);
+});
+```
+* La función `router.post()` configura una ruta que responde a las peticiones HTTP POST. Esto significa que cuando un cliente envía una petición POST a la URL configurada, se activará esta ruta.
+* Dentro de la función callback `(req, res) => {... }` estamos interesados ​​en la propiedad `req.body`. Esta propiedad contiene los datos (nombre, apellido y correo electrónico) que el cliente enviará como parte del cuerpo de la solicitud POST.
+* Con const `user = req.body` extraemos estos datos de `req.body` y los almacenamos en la constante de `user`.
+* Agregamos los datos del `user` a una matriz llamada `users`. Para garantizar que cada usuario tenga un identificador único, generamos un identificador único universal (UUID) usando una función como `uuidv4()` y lo incluimos como identificación en el objeto de usuario.
+* Finalmente, usamos `res.send()` para enviar una respuesta al cliente. En este caso, enviamos un mensaje simple notificando al cliente que el usuario se agregó exitosamente a la base de datos.
