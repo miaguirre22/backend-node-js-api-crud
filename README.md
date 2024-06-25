@@ -72,3 +72,50 @@ app.get("/", (req, res) => {
 ```
 La función `app.get()` acepta dos parámetros. El primero se usa para especificar la ruta (ej: "/").
 El segundo es una función de callback donde se define que hacer cuando se recibe una petición GET. La función de callback recibe dos parámetros: el cuerpo de la petición (`req`), que contiene información como la consulta de la peteción, los parámetros, el cuerpo y los encabezados HTTP. Mientras que el objeto respuesta (`res`) contiene la información que se desea enviar.
+
+## Crear la API CRUD de Users
+Estos son los endpoint de la API:
+1. GET /users - buscar todos los usuario
+2. POST /users - crear un usuario
+3. GET /users/:id - buscar un usuario especifico
+4. DELETE /users/:id - borrar un usuario especifico
+5. PATCH /users/:id - actualizar un usuario especifico
+
+## Crear el Endpoint GET /users
+Se obtendrá la lista de todos los usuarios en su base de datos simulada. Esta información se presentará en formato JSON.
+* Creamos una nueva carpeta llamada "routes".
+* Creamos un nuevo archivo llamado `usuarios.js` dentro de la carpeta de "routes".
+* Escribimos el código para configurar el enrutador GET.
+```
+import express from 'express';
+const router = express.Router();
+
+// Mock database
+const users = [
+  {
+    first_name: "John",
+    last_name: "Doe",
+    email: "johndoe@example.com",
+  },
+  {
+    first_name: "Alice",
+    last_name: "Smith",
+    email: "alicesmith@example.com",
+  },
+];
+
+// Getting the list of users from the mock database
+router.get("/", (req, res) => {
+  res.send(users);
+});
+
+export default router
+```
+En el archivo **index.js** importar las rutas del archivo **users.js**:
+```
+import userRoutes from "./routes/users.js";
+```
+Usar el método `app.use`, y especificar la ruta y el controlador del enrutador:
+```
+app.use("/users", userRoutes)
+```
