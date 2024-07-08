@@ -40,10 +40,21 @@ router.get("/:id", (req, res) => {
   const foundUser = users.find((user) => user.id === id);
 
   // Todo: if foundUser === undefined
-  
+
   res.send(foundUser);
 
   console.log(`GET /users/:${id} \n`, foundUser);
+});
+
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  console.log(`DELETE /:${id}`, "id.toString(): ", id.toString());
+
+  const newUsers = users.filter((user) => user.id !== id.toString());
+
+  console.log(newUsers);
+
+  res.send(`${id} eliminado exitosamente de la base de datos`);
 });
 
 export default router;

@@ -165,6 +165,29 @@ router.get("/:id", (req, res) => {
 * Usamos el método `.find()` para buscar estos datos en función del ID de usuario (id) capturado de la URL. Este método intenta encontrar un usuario cuya identificación coincida con la identificación proporcionada.
 * Una vez que localizamos los datos del usuario (si existen), los enviamos como respuesta usando `res.send(foundUser)`. La variable `foundUser` contiene el objeto de usuario que coincide con el ID solicitado.
 
+## Crear el Endpoint DELETE /users/:id 
+En ocasiones, es necesario eliminar cuentas de usuario o registros específicos de una base de datos por diversos motivos, como la desactivación de cuentas.
+Aquí, explorará cómo utilizar este punto final para eliminar datos de usuario en función de una identificación de usuario proporcionada. 
+Para eliminar datos, definiremos una ruta que acepte solicitudes DELETE y elimine los datos de la base de datos.
+Vea el código para eliminar un usuario de una base de datos a continuación:
+```
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  console.log(`DELETE /:${id}`, "id.toString(): ", id.toString());
+
+  const newUsers = users.filter((user) => user.id !== id.toString());
+
+  console.log(newUsers);
+
+  res.send(`${id} eliminado exitosamente de la base de datos`);
+});
+```
+Esto es lo que hace este código:
+* La función `router.delete()` configura una ruta que responde a las solicitudes HTTP DELETE. En este ejemplo, hemos definido una ruta con ('/:id'), donde :id es un parámetro de ruta. Captura un valor dinámico de la URL, que representa la ID de usuario que queremos eliminar.
+* En la función de devolución de llamada `(req, res) => {...}`, podemos acceder al objeto `req`, que representa la solicitud entrante realizada por el cliente. Específicamente, estamos interesados ​​en `req.params`, que contiene los valores de los parámetros de ruta. Aquí, desestructuramos la identificación de `req.params`, extrayendo la identificación del usuario de la URL. Por ejemplo, si un cliente envía una solicitud DELETE a /users/123, la identificación será '123'.
+* Suponiendo que tenemos una matriz o base de datos (usuarios) que contiene datos de usuario, empleamos el método `.filter()` para crear una nueva matriz que excluye al usuario con el ID coincidente (id). Esto elimina efectivamente al usuario del almacén de datos.
+* Después de eliminar exitosamente al usuario, enviamos una respuesta al cliente usando `res.send()`. La respuesta contiene un mensaje que confirma la eliminación, incluido el ID del usuario que se eliminó de la base de datos.
+
 
 ## Implementar Swagger
 https://www.youtube.com/watch?v=rIWGcxnVIA8
