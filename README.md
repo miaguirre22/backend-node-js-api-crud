@@ -145,3 +145,27 @@ router.post("/", (req, res) => {
 * Con const `user = req.body` extraemos estos datos de `req.body` y los almacenamos en la constante de `user`.
 * Agregamos los datos del `user` a una matriz llamada `users`. Para garantizar que cada usuario tenga un identificador único, generamos un identificador único universal (UUID) usando una función como `uuidv4()` y lo incluimos como identificación en el objeto de usuario.
 * Finalmente, usamos `res.send()` para enviar una respuesta al cliente. En este caso, enviamos un mensaje simple notificando al cliente que el usuario se agregó exitosamente a la base de datos.
+
+## Crear el Endpoint GET /users/:id
+
+Permite obtener datos específicos basados ​​en un ID, como una identificación de usuario.
+```
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+
+  const foundUser = users.find((user) => user.id === id);
+
+  res.send(foundUser);
+
+  console.log("GET /users/:id", foundUser);
+});
+```
+* La función `router.get()` configura una ruta que responde a las solicitudes HTTP GET ('/users/:id'). La parte :id es un parámetro de ruta, que nos permite capturar un valor dinámico de la URL. En este caso, representa la identificación de usuario que queremos recuperar.
+* Dentro de la función de callback `(req, res) => {...}`, podemos acceder al objeto `req`, que representa la solicitud entrante realizada por el cliente. Específicamente, estamos interesados ​​en `req.params`, que contiene los valores de los parámetros de ruta. En este caso, desestructuramos la identificación de `req.params`, extrayendo efectivamente la identificación del usuario de la URL. Por ejemplo, si un cliente realiza una solicitud GET a /users/123, la identificación será '123'.
+* Usamos el método `.find()` para buscar estos datos en función del ID de usuario (id) capturado de la URL. Este método intenta encontrar un usuario cuya identificación coincida con la identificación proporcionada.
+* Una vez que localizamos los datos del usuario (si existen), los enviamos como respuesta usando `res.send(foundUser)`. La variable `foundUser` contiene el objeto de usuario que coincide con el ID solicitado.
+
+
+## Implementar Swagger
+https://www.youtube.com/watch?v=rIWGcxnVIA8
+
