@@ -57,4 +57,22 @@ router.delete("/:id", (req, res) => {
   res.send(`${id} eliminado exitosamente de la base de datos`);
 });
 
+router.patch("/:id", (req, res) => {
+  const { id } = req.params;
+  console.log(`PATCH /users/:${id} \n`);
+
+  const { first_name, last_name, email } = req.body;
+
+  const user = users.find((user) => user.id === id);
+
+  console.log("Antes: \n", user);
+
+  if (first_name) user.first_name = first_name;
+  if (last_name) user.last_name = last_name;
+  if (email) user.email = email;
+
+  res.send(`El usuario ${id} fue actualizado.`);
+  console.log("Despues: \n", user);
+});
+
 export default router;

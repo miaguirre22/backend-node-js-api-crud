@@ -188,6 +188,35 @@ Esto es lo que hace este código:
 * Suponiendo que tenemos una matriz o base de datos (usuarios) que contiene datos de usuario, empleamos el método `.filter()` para crear una nueva matriz que excluye al usuario con el ID coincidente (id). Esto elimina efectivamente al usuario del almacén de datos.
 * Después de eliminar exitosamente al usuario, enviamos una respuesta al cliente usando `res.send()`. La respuesta contiene un mensaje que confirma la eliminación, incluido el ID del usuario que se eliminó de la base de datos.
 
+## Crear el Endpoint PATCH /users/:id
+Hay ocasiones en las que no es necesario actualizar un recurso u objeto completo. En su lugar, querrás realizar modificaciones o ajustes parciales. Aquí es donde entra en juego la solicitud HTTP PATCH.
+Por ejemplo, después de crear un nuevo usuario, puede cambiar el nombre, el apellido o el correo electrónico de ese usuario mediante la solicitud PATCH. Veamos cómo hacerlo.
+```
+router.patch("/:id", (req, res) => {
+  const { id } = req.params;
+  console.log(`PATCH /users/:${id} \n`);
+
+  const { first_name, last_name, email } = req.body;
+
+  const user = users.find((user) => user.id === id);
+
+  console.log("Antes: \n", user);
+
+  if (first_name) user.first_name = first_name;
+  if (last_name) user.last_name = last_name;
+  if (email) user.email = email;
+
+  res.send(`El usuario ${id} fue actualizado.`);
+  console.log("Despues: \n", user);
+});
+```
+Esto es lo que logra este fragmento de código:
+* La función `router.patch()` configura una ruta que responde a las solicitudes HTTP PATCH. En este ejemplo, hemos definido una ruta con ('/:id'), donde :id es un parámetro de ruta. Captura el valor dinámico de la URL, que representa la ID de usuario que queremos actualizar.
+* Dentro de la función de devolución de llamada `(req, res) => {...}`, podemos acceder al objeto `req`, que representa la solicitud entrante realizada por el cliente. Específicamente, estamos interesados ​​en `req.params`, que contiene los valores de los parámetros de ruta (id en este caso), y `req.body`, que contiene los datos que se actualizarán.
+* A continuación, utilizamos `.find()` para localizar el objeto de usuario con el ID coincidente (id). Una vez encontrado, podemos proceder a modificar los datos del usuario en función del contenido de `req.body`. También verificamos si las propiedades first_name, last_name o email existen en `req.body`. Si es así, podemos actualizar las propiedades correspondientes del objeto de usuario con los nuevos valores. Esto nos permite realizar cambios selectivos en los datos del usuario sin afectar otros atributos. 
+* Después de aplicar con éxito las modificaciones solicitadas, enviamos una respuesta al cliente usando `res.send()`. La respuesta incluye un mensaje que confirma la actualización exitosa de los datos del usuario, junto con el ID del usuario.
+
+
 
 ## Implementar Swagger
 https://www.youtube.com/watch?v=rIWGcxnVIA8
